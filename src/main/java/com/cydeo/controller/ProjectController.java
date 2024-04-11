@@ -25,7 +25,7 @@ public class ProjectController {
     @GetMapping("/create")
     public String createProject(Model model){
         model.addAttribute("project",new ProjectDTO());
-        model.addAttribute("managers",userService.findAll());
+        model.addAttribute("managers",userService.findManagers());
         model.addAttribute("projects",projectService.findAll());
 
 
@@ -50,7 +50,7 @@ public class ProjectController {
     public String editUser(@PathVariable("projectCode") String projectCode, Model model){
 
         model.addAttribute("project",projectService.findById(projectCode));
-        model.addAttribute("managers",userService.findAll());
+        model.addAttribute("managers",userService.findManagers());
         model.addAttribute("projects",projectService.findAll());
 
         return "/project/update";
@@ -60,6 +60,12 @@ public class ProjectController {
     public String updateUser(@ModelAttribute("project") ProjectDTO project){
 
         projectService.update(project);
+        return "redirect:/project/create";
+    }
+
+    @GetMapping("/complete/{projectCode}")
+    public String completeProject( @PathVariable("projectCode") String projectCode){
+        projectService.compelete(projectService.findById(projectCode));
         return "redirect:/project/create";
     }
 

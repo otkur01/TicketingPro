@@ -40,4 +40,9 @@ public class ProjectServiceImpl extends AbstractMapService<ProjectDTO,String> im
         }
         super.update(object.getProjectCode(), object);
     }
+
+    @Override
+    public void compelete(ProjectDTO project) {
+        project.setProjectStatus(Status.COMPLETE);
+    }
 }
