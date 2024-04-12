@@ -32,14 +32,15 @@
                                 <div class="panel-body">
 
                                     <!-- ------------------------FORM START----------------------------- -->
-                                    <form>
+                                    <form th:action="@{/task/update/{id}(id=${task.getId()})}" method="post" th:object="${task}">
 
                                         <div class="row">
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Project</label>
-                                                    <select name="project" class="custom-select">
-                                                        <option></option>
+                                                    <select name="project" class="custom-select" th:field="*{project}">
+                                                        <option th:value="''" th:text="Select"></option>
+                                                        <option th:each="project : ${projects}" th:value="${project.projectCode}" th:text="${project.projectName}"></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -49,8 +50,9 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label>Assigned Employee</label>
-                                                    <select name="assignedemployee" class="custom-select">
-                                                        <option></option>
+                                                    <select name="assignedemployee" class="custom-select" th:field="*{assignedEmployee}">
+                                                        <option th:value="''" th:text="Select"></option>
+                                                        <option th:each="employee:${employees}" th:value="${employee.userName}" th:text="${employee.firstName+ ' '+ employee.lastName }"></option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -60,7 +62,8 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="tasksubject" class="col-form-label">Task Subject</label>
-                                                    <input id="tasksubject" type="text" class="form-control" placeholder="task subject">
+                                                    <input id="tasksubject" type="text" class="form-control"
+                                                           placeholder="task subject" th:field="*{taskSubject}">
                                                 </div>
                                             </div>
                                         </div>
@@ -69,7 +72,8 @@
                                             <div class="col">
                                                 <div class="form-group">
                                                     <label for="taskdetail">Task Detail</label>
-                                                    <textarea id="taskdetail" class="form-control" placeholder="task detail"></textarea>
+                                                    <textarea id="taskdetail" class="form-control"
+                                                              placeholder="task detail" th:field="*{taskDetail}"></textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -118,17 +122,16 @@
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
+                                            <tr th:each="task1 :${tasks}">
+                                                <td th:text="${task1.project.projectName }"></td>
+                                                <td th:text="${task1.taskSubject}"></td>
+                                                <td th:text="${task1.assignedEmployee.firstName+ ' '+ task1.assignedEmployee.lastName}"></td>
+                                                <td th:text="${#temporals.format(task1.assignedData,'MM.dd.yyyy')}"></td>
+                                                <td th:text="${task1.taskStatus.value}"></td>
                                                 <td class="actions">
-                                                    <a href="#" class="btn btn-warning rounded-0">Update</a>
-                                                    <a href="#" class="btn btn-danger rounded-0">Delete</a>
+                                                    <a th:href="@{/task/update/{id}(id=${task1.getId()})}" class="btn btn-warning rounded-0">Update</a>
+                                                    <a th:href="@{/task/delete/{id}(id=${task1.getId()})}" class="btn btn-danger rounded-0">Delete</a>
                                                 </td>
-
                                             </tr>
                                             </tbody>
                                         </table>
